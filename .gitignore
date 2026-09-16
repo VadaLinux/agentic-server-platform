@@ -1,0 +1,26 @@
+# Environment & secrets
+.env
+*.env
+credentials.json
+*.pem
+*.key
+token
+
+# Data & Backups
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.pgcustom
+*.tar.gz
+backups/
+pgdata/
+data/
+
+# OS & Logs
+*.log
+.DS_Store
+Thumbs.db
+node_modules/
+venv/
+__pycache__/
+*.pyc

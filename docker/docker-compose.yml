@@ -1,0 +1,85 @@
+services:
+  omniroute:
+    build:
+      context: ./omniroute
+      dockerfile: Dockerfile
+    image: omniroute:local
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATA_DIR: /data
+    volumes:
+      - omniroute_data:/data
+    ports:
+      - "127.0.0.1:20128:20128"
+    networks:
+      - agentic-net
+
+  postgres:
+    image: pgvector/pgvector:pg17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: multica
+      POSTGRES_USER: ${POSTGRES_USER:-multica}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-multica_secure_pass_2026}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U multica -d multica"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - agentic-net
+
+  backend:
+    image: ghcr.io/multica-ai/multica-backend:latest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      omniroute:
+        condition: service_started
+    environment:
+      APP_ENV: production
+      PORT: 8080
+      DATABASE_URL: postgres://${POSTGRES_USER:-multica}:${POSTGRES_PASSWORD:-multica_secure_pass_2026}@postgres:5432/multica?sslmode=disable
+      JWT_SECRET: ${JWT_SECRET:-6ce920987719e92db27ac13757e722bb85b88d34ac29831cbf0b0bf083bb3532}
+      MULTICA_VCS_SECRET_KEY: ${MULTICA_VCS_SECRET_KEY:-mVkDSNsSEB2hRY+0YWIsEb3kkdURS97dSc6rZw8ri3c=}
+      MULTICA_VCS_INTEGRATION_ENABLED: "true"
+      ALLOW_SIGNUP: "true"
+      MULTICA_APP_URL: ${MULTICA_APP_URL:-https://multi-agent.crigamo3.com}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-https://multi-agent.crigamo3.com}
+      MULTICA_PUBLIC_URL: ${MULTICA_PUBLIC_URL:-https://multi-agent.crigamo3.com}
+      MULTICA_LLM_BASE_URL: http://omniroute:20128/v1
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8081:8080"
+    networks:
+      - agentic-net
+
+  frontend:
+    image: ghcr.io/multica-ai/multica-web:latest
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+      REMOTE_API_URL: http://backend:8080
+      NEXT_PUBLIC_API_URL: ${MULTICA_APP_URL:-https://multi-agent.crigamo3.com}
+    ports:
+      - "127.0.0.1:3000:3000"
+    networks:
+      - agentic-net
+
+volumes:
+  pgdata:
+  omniroute_data:
+
+networks:
+  agentic-net:
+    driver: bridge
