@@ -121,4 +121,4 @@ Per estendere ulteriormente la nostra **Agentic Server Platform**, ecco le aree 
 
 OmniRoute trasforma l'infrastruttura da una semplice serie di chiamate API a una **piattaforma di inferenza resiliente, economica e monetizzabile**.
 
-Tutti i componenti sono già integrati in Docker e operativi sulla nostra VPS di produzione su `https://ai-router.crigamo3.com`.
+Tutti i componenti sono già integrati in Docker e operativi sulla nostra VPS di produzione su `https://ai-router.agentizzatori.com`.

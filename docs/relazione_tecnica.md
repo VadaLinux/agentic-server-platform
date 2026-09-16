@@ -3,7 +3,7 @@
 **Data:** 16 Settembre 2026  
 **Autore / Architetto:** Gabriele Vadalà (con l'assistenza dell'agente orchestratore Mika)  
 **Ambiente:** VPS KVM 4 (Hostinger Datacenter Francoforte) & Kubernetes Ready (Rancher)  
-**Dominio di Produzione:** `crigamo3.com`  
+**Dominio di Produzione:** `agentizzatori.com`  
 
 ---
 
@@ -67,14 +67,14 @@ Tutti i componenti sono stati unificati in `/opt/agentic-platform/stack/docker-c
 ---
 
 ### Fase 5: Ingress Zero Trust con Cloudflare Tunnel
-È stato installato e configurato il demone `cloudflared` con routing su dominio **`crigamo3.com`**:
+È stato installato e configurato il demone `cloudflared` con routing su dominio **`agentizzatori.com`**:
 
 | URL Pubblico | Servizio Interno | Funzionalità |
 |---|---|---|
-| **`https://multi-agent.crigamo3.com`** | `http://localhost:3000` | Frontend Web Multica per interazione utente |
-| **`https://multi-agent.crigamo3.com/health`** | `http://localhost:8080` | Backend API & Daemon endpoint |
-| **`https://multi-agent.crigamo3.com/ws`** | `http://localhost:8080` | WebSocket per streaming task real-time |
-| **`https://ai-router.crigamo3.com`** | `http://localhost:20128` | Dashboard & Gateway API OmniRoute |
+| **`https://multi-agent.agentizzatori.com`** | `http://localhost:3000` | Frontend Web Multica per interazione utente |
+| **`https://multi-agent.agentizzatori.com/health`** | `http://localhost:8080` | Backend API & Daemon endpoint |
+| **`https://multi-agent.agentizzatori.com/ws`** | `http://localhost:8080` | WebSocket per streaming task real-time |
+| **`https://ai-router.agentizzatori.com`** | `http://localhost:20128` | Dashboard & Gateway API OmniRoute |
 
 *Nessuna porta applicativa è aperta pubblicamente su internet; tutto il traffico attraversa i tunnel crittografati Cloudflare con protezione WAF, DDoS e possibilità di policy OIDC/Access.*
 
@@ -99,8 +99,8 @@ Sviluppato lo strumento di gestione `/opt/agentic-platform/scripts/manage_tenant
 ## 3. Stato di Verifica e Risultati del Test
 
 * **Healthcheck Backend Multica:** `{"status":"ok","pid":1,"started_at":"2026-09-16T09:21:20Z"}` via HTTPS.
-* **Web UI Multica:** `HTTP/2 200 OK` su `https://multi-agent.crigamo3.com`.
-* **OmniRoute Dashboard:** `HTTP/2 307 Redirect` su `https://ai-router.crigamo3.com`.
+* **Web UI Multica:** `HTTP/2 200 OK` su `https://multi-agent.agentizzatori.com`.
+* **OmniRoute Dashboard:** `HTTP/2 307 Redirect` su `https://ai-router.agentizzatori.com`.
 * **Test Inferenza Hermes:** Eseguito test one-shot con risposta corretta attraverso il gateway locale.
 * **Tenant Demo:** Creata con successo la prima chiave cliente `Workspace-Cliente-Alpha`.
 
