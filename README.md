@@ -121,8 +121,9 @@ agentic-server-platform/
 ├── README.md                     # Platform documentation & architecture
 ├── LICENSE                       # MIT License
 ├── docs/
-│   ├── relazione_tecnica.md      # Detailed engineering report & migration log
-│   └── omniroute_deep_dive.md    # OmniRoute deep dive, feature catalog & brainstorming
+│   ├── relazione_tecnica.md          # Detailed engineering report & migration log
+│   ├── omniroute_deep_dive.md        # OmniRoute deep dive, feature catalog & brainstorming
+│   └── omniroute_feature_inventory.md# Production usage metrics, feature gaps & activation plan
 ├── docker/
 │   ├── docker-compose.yml        # Multi-service stack (OmniRoute, Multica, Postgres)
 │   └── omniroute/
